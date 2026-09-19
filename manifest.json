@@ -1,0 +1,17 @@
+{
+    "name": "Buku Kas Ryan",
+    "short_name": "Kas Ryan",
+    "description": "Aplikasi pencatat keuangan mahasiswa.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#118eea",
+    "theme_color": "#118eea",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/3135/3135679.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

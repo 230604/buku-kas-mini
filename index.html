@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Buku Kas Mini - Mahasiswa</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="auth-screen" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fa-solid fa-wallet"></i> KEUANGAN RYAN</div>
+            
+            <!-- Registration Form (First time) -->
+            <form id="auth-register-form" style="display:none;">
+                <h2 style="margin-bottom: 20px; font-size:18px; text-align:center;">Buat PIN Keamanan</h2>
+                <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; text-align:center;">Amankan data Anda. Silakan buat 6 digit PIN untuk mengunci aplikasi ini.</p>
+                <input type="password" id="reg-pin" class="form-select" placeholder="••••••" maxlength="6" pattern="\d{6}" required style="margin-bottom:15px; text-align:center; font-size:24px; letter-spacing:8px;">
+                <button type="submit" class="btn-primary w-100">SIMPAN PIN</button>
+            </form>
+
+            <!-- Login Form -->
+            <form id="auth-login-form" style="display:none;">
+                <div style="text-align:center; margin-bottom:24px;">
+                    <img src="https://ui-avatars.com/api/?name=Ryan&background=random" class="mh-avatar" style="width:64px; height:64px; margin-bottom:12px;" alt="Avatar">
+                    <h2 style="font-size:18px;">Selamat datang!</h2>
+                </div>
+                <input type="password" id="login-pin" class="form-select" placeholder="••••••" maxlength="6" pattern="\d{6}" required style="margin-bottom:20px; text-align:center; font-size:24px; letter-spacing:8px;">
+                
+                <button type="submit" class="btn-primary w-100" style="margin-bottom: 20px;">BUKA KUNCI</button>
+                
+                <div id="biometric-section" style="text-align:center; display:none;">
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">atau sentuh sensor</p>
+                    <button type="button" id="btn-fingerprint" class="btn-icon" style="font-size:40px; color:var(--info-blue); background:none; border:none; cursor:pointer; transition:transform 0.2s;"><i class="fa-solid fa-fingerprint"></i></button>
+                </div>
+                <div style="text-align:center; margin-top:16px;">
+                    <button type="button" id="btn-setup-fingerprint" class="btn-danger-outline" style="display:none; font-size:11px; padding:6px 10px;">Daftarkan Sidik Jari</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="app-container" id="app-main" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar print-hide">
+            <div class="logo">
+                <i class="fa-solid fa-wallet"></i> KEUANGAN RYAN
+            </div>
+            
+            <div class="sidebar-inner">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-target="dashboard">
+                        <i class="fa-solid fa-house"></i> <span>DASHBOARD</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="transactions">
+                        <i class="fa-solid fa-money-bill-transfer"></i> <span>TRANSAKSI</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="savings">
+                        <i class="fa-solid fa-piggy-bank"></i> <span>TABUNGAN</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="balances">
+                        <i class="fa-solid fa-building-columns"></i> <span>SALDO</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="budget">
+                        <i class="fa-solid fa-scale-balanced"></i> <span>BUDGET</span>
+                    </a>
+                    <a href="#" class="nav-item" data-target="stats">
+                        <i class="fa-solid fa-chart-simple"></i> <span>REKAP & STATISTIK</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar print-hide">
+                <div class="topbar-left" style="display:flex; align-items:center; gap:15px;">
+                    <button id="sidebar-toggle" class="btn-icon print-hide" style="background:none; border:none; font-size:20px; cursor:pointer; color:var(--text-dark);"><i class="fa-solid fa-bars"></i></button>
+                    <h1 id="page-title">DASHBOARD UTAMA</h1>
+                </div>
+                <div class="topbar-right">
+                    <button class="btn-primary print-hide" onclick="window.print()"><i class="fa-solid fa-print"></i> Cetak</button>
+                    <div class="user-profile">
+                        <div class="user-icon"><i class="fa-solid fa-user"></i></div>
+                        <span>USER</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 1. DASHBOARD VIEW -->
+            <div id="dashboard" class="view-section active">
+                <div class="print-header">RINGKASAN HARIAN</div>
+                
+                <!-- MOBILE HERO (Visible only on mobile) -->
+                <div class="mobile-hero mobile-only">
+                    <div class="mh-top">
+                        <div class="mh-greeting">
+                            <img src="https://ui-avatars.com/api/?name=Ryan&background=random" class="mh-avatar" alt="Avatar">
+                            <div>
+                                <div style="font-size:11px; opacity:0.8;">Selamat datang 👋</div>
+                                <div style="font-size:15px; font-weight:700;">Master Ryan!</div>
+                            </div>
+                        </div>
+                        <div class="mh-icons">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                    </div>
+                    <div class="mh-balance-box">
+                        <div style="font-size:12px; opacity:0.8; margin-bottom:4px;">Total Asset</div>
+                        <div id="dash-remaining-mobile" style="font-size:32px; font-weight:800; letter-spacing:-1px;">Rp 0</div>
+                    </div>
+                </div>
+
+                <div class="grid-4 mb-20 desktop-only">
+                    <!-- Status Keuangan (Takes up 2 cols) -->
+                    <div class="card" style="grid-column: span 2; display: flex; flex-direction: column; justify-content: center;">
+                        <h3 style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">STATUS KEUANGAN BULAN INI</h3>
+                        <div id="dash-status" style="font-size: 28px; font-weight: 800; margin-bottom: 8px;">AMAN 🟢</div>
+                        <p id="dash-status-desc" style="font-size: 13px; color: var(--text-muted);">Estimasi uang Anda cukup sampai akhir bulan.</p>
+                    </div>
+
+                    <!-- Sisa Uang Harian -->
+                    <div class="card" style="grid-column: span 2; display: flex; flex-direction: column; justify-content: center; align-items: center; border-color: var(--info-blue); border-width: 2px;">
+                        <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 4px;">SISA JATAH SAAT INI</h3>
+                        <div id="dash-remaining-big" style="font-size: 36px; font-weight: 800; color: var(--info-blue);">Rp 0</div>
+                    </div>
+                </div>
+
+                <!-- Jatah Bulanan Tracker -->
+                <div class="card mb-20 desktop-only" style="padding: 24px;">
+                    <h3 style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">PENGGUNAAN JATAH ORANG TUA</h3>
+                    <div style="display: flex; gap: 40px; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Total Diterima</div>
+                            <div id="dash-ortu-total" style="font-size: 20px; font-weight: 800; color: var(--success-green);">Rp 0</div>
+                        </div>
+                        <div style="width: 2px; height: 40px; background: var(--border-color);"></div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Sudah Terpakai / Ditabung</div>
+                            <div id="dash-ortu-used" style="font-size: 20px; font-weight: 800; color: var(--danger-red);">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick KPIs (Visible on both, but styles adapt) -->
+                <div class="grid-3 mb-20">
+                    <div class="card kpi-card">
+                        <div class="kpi-title">Pemasukan</div>
+                        <div class="kpi-value text-green" id="dash-income">Rp 0</div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-title">Pengeluaran</div>
+                        <div class="kpi-value text-red" id="dash-expense">Rp 0</div>
+                    </div>
+                    <div class="card kpi-card desktop-only">
+                        <div class="kpi-title">Ditabung</div>
+                        <div class="kpi-value text-purple" id="dash-saved">Rp 0</div>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="card table-card mb-20">
+                    <div class="card-header">
+                        <h3 class="card-title">Transaksi Terbaru</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Keterangan</th>
+                                    <th class="desktop-only">Kategori</th>
+                                    <th class="text-right">Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-recent-tbody">
+                                <!-- Injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. TRANSACTIONS VIEW -->
+            <div id="transactions" class="view-section">
+                <div class="print-header">BUKU TRANSAKSI</div>
+                <div class="grid-form-table">
+                    <!-- Form Area -->
+                    <div class="card print-hide">
+                        <div class="card-header">
+                            <h3 class="card-title">Catat Transaksi Baru</h3>
+                        </div>
+                        <form id="trx-form" class="add-form">
+                            <div class="form-group">
+                                <label>Jenis Transaksi</label>
+                                <select id="trx-type" class="form-select" required>
+                                    <option value="income">Uang Masuk</option>
+                                    <option value="expense" selected>Uang Keluar</option>
+                                    <option value="transfer">Menabung</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tanggal</label>
+                                <input type="date" id="trx-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Keterangan</label>
+                                <input type="text" id="trx-desc" placeholder="Contoh: Beli Kopi" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Kategori</label>
+                                <select id="trx-cat" class="form-select" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Tempat Uang / Sumber</label>
+                                <select id="trx-account" class="form-select" required></select>
+                            </div>
+                            <div class="form-group" id="group-saving-goal" style="display: none;">
+                                <label>Tujuan Tabungan</label>
+                                <select id="trx-saving-goal" class="form-select"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nominal (Rp)</label>
+                                <input type="number" id="trx-amount" placeholder="0" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Catatan Opsional</label>
+                                <input type="text" id="trx-notes" placeholder="Catatan tambahan...">
+                            </div>
+                            <button type="submit" class="btn-primary w-100">SIMPAN TRANSAKSI</button>
+                        </form>
+                    </div>
+
+                    <!-- Table Area -->
+                    <div class="card table-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Riwayat Transaksi</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Keterangan</th>
+                                        <th>Kategori</th>
+                                        <th>Tempat Uang</th>
+                                        <th>Catatan</th>
+                                        <th class="text-right">Masuk (Rp)</th>
+                                        <th class="text-right">Keluar (Rp)</th>
+                                        <th class="print-hide">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trx-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SAVINGS VIEW -->
+            <div id="savings" class="view-section">
+                <div class="print-header">LAPORAN TABUNGAN & TARGET</div>
+                
+                <div class="card print-hide mb-20">
+                    <div class="card-header">
+                        <h3 class="card-title">Buat Target Tabungan Baru</h3>
+                    </div>
+                    <form id="goal-form" class="add-form inline-form">
+                        <input type="text" id="goal-name" placeholder="Nama Target (misal: Dana Darurat)" required>
+                        <input type="number" id="goal-amount" placeholder="Target Nominal (Rp)" required min="1">
+                        <button type="submit" class="btn-primary">Buat Target</button>
+                    </form>
+                </div>
+
+                <div class="grid-3" id="savings-goals-container"></div>
+            </div>
+
+            <!-- 4. BALANCES VIEW -->
+            <div id="balances" class="view-section">
+                <div class="print-header">LAPORAN POSISI SALDO</div>
+                
+                <div class="card print-hide mb-20">
+                    <div class="card-header">
+                        <h3 class="card-title">Kelola Tempat Uang / Rekening</h3>
+                    </div>
+                    <form id="account-form" class="add-form inline-form">
+                        <input type="text" id="acc-name" placeholder="Nama Rekening/E-Wallet" required>
+                        <select id="acc-type" class="form-select">
+                            <option value="Cash">Cash</option>
+                            <option value="Rekening Bank">Rekening Bank</option>
+                            <option value="E-Wallet">E-Wallet</option>
+                            <option value="Tabungan Khusus">Tabungan Khusus</option>
+                        </select>
+                        <input type="number" id="acc-init-balance" placeholder="Saldo Awal (Rp)" required min="0">
+                        <button type="submit" class="btn-primary">Tambah Akun</button>
+                    </form>
+                </div>
+
+                <div class="grid-4" id="accounts-container"></div>
+            </div>
+
+            <!-- 5. BUDGET VIEW -->
+            <div id="budget" class="view-section">
+                <div class="print-header">LAPORAN BUDGET BULANAN</div>
+                
+                <div class="card print-hide mb-20">
+                    <div class="card-header">
+                        <h3 class="card-title">Atur Budget Bulanan</h3>
+                    </div>
+                    <form id="budget-form" class="add-form inline-form">
+                        <select id="budget-cat" class="form-select" required></select>
+                        <input type="number" id="budget-amount" placeholder="Nominal Budget (Rp)" required min="1">
+                        <button type="submit" class="btn-primary">Set Budget</button>
+                    </form>
+                </div>
+
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Kategori</th>
+                                    <th class="text-right">Budget (Rp)</th>
+                                    <th class="text-right">Terpakai (Rp)</th>
+                                    <th class="text-right">Sisa (Rp)</th>
+                                    <th style="width: 200px;">Progress</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="budget-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. STATS & RECAP VIEW -->
+            <div id="stats" class="view-section">
+                <div class="print-header">STATISTIK & REKAPITULASI</div>
+                
+                <!-- Quick Stats -->
+                <div class="grid-4 mb-20">
+                    <div class="card kpi-card">
+                        <div class="kpi-title">RATA-RATA JAJAN/HARI</div>
+                        <div class="kpi-value text-dark" id="stat-avg-daily">Rp 0</div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-title">PENGELUARAN TERBESAR</div>
+                        <div class="kpi-value text-red" id="stat-max-exp">Rp 0</div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-title">KATEGORI TERBOROS</div>
+                        <div class="kpi-value text-orange" id="stat-top-cat">-</div>
+                    </div>
+                    <div class="card kpi-card">
+                        <div class="kpi-title">UANG MASUK TERBESAR</div>
+                        <div class="kpi-value text-green" id="stat-max-inc">Rp 0</div>
+                    </div>
+                </div>
+
+                <!-- Charts moved here -->
+                <div class="grid-3 mb-20 page-break">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-size:13px;">Pemasukan vs Pengeluaran</h3>
+                        </div>
+                        <div class="canvas-wrapper"><canvas id="chart-inc-exp"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-size:13px;">Perkembangan Tabungan</h3>
+                        </div>
+                        <div class="canvas-wrapper"><canvas id="chart-savings"></canvas></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title" style="font-size:13px;">Kategori Pengeluaran</h3>
+                        </div>
+                        <div class="canvas-wrapper"><canvas id="chart-expense-cat"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Monthly Recap Table -->
+                <div class="card table-card page-break">
+                    <div class="card-header">
+                        <h3 class="card-title">Rekap Bulanan Keseluruhan</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Bulan</th>
+                                    <th class="text-right">Total Masuk</th>
+                                    <th class="text-right">Total Keluar</th>
+                                    <th class="text-right">Ditabung</th>
+                                    <th class="text-right">Sisa Jatah</th>
+                                    <th class="text-center">Saving Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recap-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        
+        <!-- BOTTOM NAVIGATION (Visible only on mobile) -->
+        <nav class="bottom-nav mobile-only print-hide">
+            <a href="#" class="b-nav-item active" data-target="dashboard"><i class="fa-solid fa-house"></i></a>
+            <a href="#" class="b-nav-item" data-target="stats"><i class="fa-solid fa-chart-pie"></i></a>
+            
+            <a href="#" class="b-nav-item fab" data-target="transactions">
+                <div class="fab-inner"><i class="fa-solid fa-plus"></i></div>
+            </a>
+            
+            <a href="#" class="b-nav-item" data-target="balances"><i class="fa-solid fa-wallet"></i></a>
+            <a href="#" class="b-nav-item" data-target="budget"><i class="fa-solid fa-list-check"></i></a>
+        </nav>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
