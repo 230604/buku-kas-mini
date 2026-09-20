@@ -15,21 +15,23 @@
     <!-- AUTHENTICATION SCREEN -->
     <div id="auth-screen" class="auth-wrapper">
         <div class="auth-card">
-            <div class="auth-logo"><i class="fa-solid fa-wallet"></i> KEUANGAN RYAN</div>
+            <div class="auth-logo"><i class="fa-solid fa-wallet"></i> BUKU KAS <span class="app-brand-name"></span></div>
             
             <!-- Registration Form (First time) -->
             <form id="auth-register-form" style="display:none;">
-                <h2 style="margin-bottom: 20px; font-size:18px; text-align:center;">Buat PIN Keamanan</h2>
-                <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; text-align:center;">Amankan data Anda. Silakan buat 6 digit PIN untuk mengunci aplikasi ini.</p>
+                <h2 style="margin-bottom: 20px; font-size:18px; text-align:center;">Setup Aplikasi</h2>
+                <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px; text-align:center;">Siapa nama Anda? Aplikasi ini akan dipersonalisasi khusus untuk Anda.</p>
+                <input type="text" id="reg-name" class="form-select" placeholder="Nama Panggilan" required style="margin-bottom:15px; text-align:center; font-size:16px;">
                 <input type="password" id="reg-pin" class="form-select" placeholder="••••••" maxlength="6" pattern="\d{6}" required style="margin-bottom:15px; text-align:center; font-size:24px; letter-spacing:8px;">
-                <button type="submit" class="btn-primary w-100">SIMPAN PIN</button>
+                <p style="font-size:11px; color:var(--text-muted); margin-top:-5px; margin-bottom:15px; text-align:center;">Buat 6 digit PIN untuk mengunci aplikasi</p>
+                <button type="submit" class="btn-primary w-100">MULAI MENGGUNAKAN</button>
             </form>
 
             <!-- Login Form -->
             <form id="auth-login-form" style="display:none;">
                 <div style="text-align:center; margin-bottom:24px;">
-                    <img src="https://ui-avatars.com/api/?name=Ryan&background=random" class="mh-avatar" style="width:64px; height:64px; margin-bottom:12px;" alt="Avatar">
-                    <h2 style="font-size:18px;">Selamat datang!</h2>
+                    <img id="login-avatar" src="https://ui-avatars.com/api/?name=User&background=random" class="mh-avatar" style="width:64px; height:64px; margin-bottom:12px;" alt="Avatar">
+                    <h2 style="font-size:18px;">Selamat datang, <span id="login-display-name"></span>!</h2>
                 </div>
                 <input type="password" id="login-pin" class="form-select" placeholder="••••••" maxlength="6" pattern="\d{6}" required style="margin-bottom:20px; text-align:center; font-size:24px; letter-spacing:8px;">
                 
@@ -50,7 +52,7 @@
         <!-- Sidebar -->
         <aside class="sidebar print-hide">
             <div class="logo">
-                <i class="fa-solid fa-wallet"></i> KEUANGAN RYAN
+                <i class="fa-solid fa-wallet"></i> BUKU KAS <span class="app-brand-name"></span>
             </div>
             
             <div class="sidebar-inner">
@@ -87,9 +89,9 @@
                 </div>
                 <div class="topbar-right">
                     <button class="btn-primary print-hide" onclick="window.print()"><i class="fa-solid fa-print"></i> Cetak</button>
-                    <div class="user-profile">
+                    <div class="user-profile" onclick="changePin()" style="cursor:pointer;" title="Klik untuk Ubah PIN">
                         <div class="user-icon"><i class="fa-solid fa-user"></i></div>
-                        <span>USER</span>
+                        <span>UBAH PIN</span>
                     </div>
                 </div>
             </header>
@@ -102,10 +104,10 @@
                 <div class="mobile-hero mobile-only">
                     <div class="mh-top">
                         <div class="mh-greeting">
-                            <img src="https://ui-avatars.com/api/?name=Ryan&background=random" class="mh-avatar" alt="Avatar">
+                            <img id="mh-avatar-img" src="https://ui-avatars.com/api/?name=User&background=random" class="mh-avatar" alt="Avatar">
                             <div>
                                 <div style="font-size:11px; opacity:0.8;">Selamat datang 👋</div>
-                                <div style="font-size:15px; font-weight:700;">Master Ryan!</div>
+                                <div style="font-size:15px; font-weight:700;" id="mh-display-name">Master!</div>
                             </div>
                         </div>
                         <div class="mh-icons">

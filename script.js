@@ -9,6 +9,20 @@ const btnFingerprint = document.getElementById('btn-fingerprint');
 
 let userPin = localStorage.getItem('fin_auth_pin');
 let credentialIdBase64 = localStorage.getItem('fin_auth_credential');
+let userName = localStorage.getItem('fin_user_name') || 'User';
+
+function updateUserNameUI() {
+    // Update all brand name spans
+    document.querySelectorAll('.app-brand-name').forEach(el => el.textContent = userName.toUpperCase());
+    
+    // Update login screen
+    if(document.getElementById('login-display-name')) document.getElementById('login-display-name').textContent = userName;
+    if(document.getElementById('login-avatar')) document.getElementById('login-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random`;
+    
+    // Update mobile hero
+    if(document.getElementById('mh-display-name')) document.getElementById('mh-display-name').textContent = `Master ${userName}!`;
+    if(document.getElementById('mh-avatar-img')) document.getElementById('mh-avatar-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random`;
+}
 
 function bufferToBase64(buffer) {
     return btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)));
@@ -30,6 +44,7 @@ function unlockApp() {
 }
 
 function initAuth() {
+    updateUserNameUI();
     if (!userPin) {
         regForm.style.display = 'block';
     } else {
@@ -42,12 +57,34 @@ function initAuth() {
     }
 }
 
+window.changePin = function() {
+    const oldPin = prompt("Untuk mengubah PIN, masukkan PIN 6-digit LAMA Anda:");
+    if (oldPin === null) return; // User cancelled
+    
+    if (oldPin === localStorage.getItem('fin_auth_pin')) {
+        const newPin = prompt("Masukkan 6-digit PIN BARU Anda:");
+        if (newPin && newPin.length === 6 && !isNaN(newPin)) {
+            localStorage.setItem('fin_auth_pin', newPin);
+            userPin = newPin; // Update memory
+            alert("Berhasil! PIN Anda telah diubah.");
+        } else {
+            alert("Gagal! PIN baru harus terdiri dari 6 angka.");
+        }
+    } else {
+        alert("Gagal! PIN lama yang Anda masukkan SALAH.");
+    }
+};
+
 if(regForm) {
     regForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        userName = document.getElementById('reg-name').value || 'User';
         userPin = document.getElementById('reg-pin').value;
+        localStorage.setItem('fin_user_name', userName);
         localStorage.setItem('fin_auth_pin', userPin);
-        alert('PIN berhasil disimpan! JANGAN SAMPAI LUPA!');
+        updateUserNameUI();
+        
+        alert('Data berhasil disimpan! JANGAN SAMPAI LUPA PIN ANDA!');
         unlockApp();
         // Show setup FP button after registration if supported
         if (window.PublicKeyCredential && !credentialIdBase64) {
