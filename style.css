@@ -540,10 +540,10 @@ html, body {
     }
 
     /* Adjust grids for mobile */
-    .grid-6 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-top: 10px; }
-    .grid-form-table { grid-template-columns: 1fr; padding: 16px; }
+    .grid-6 { grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; box-sizing: border-box; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; box-sizing: border-box; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-top: 10px; width: 100%; box-sizing: border-box; }
+    .grid-form-table { grid-template-columns: 1fr; padding: 16px; width: 100%; box-sizing: border-box; overflow-x: hidden; }
     
     .card.table-card { margin: 0 0 16px 0; width: 100%; box-sizing: border-box; }
     .card.print-hide { margin: 0 0 16px 0; width: 100%; box-sizing: border-box; }

@@ -57,6 +57,33 @@ function initAuth() {
     }
 }
 
+window.openSettings = function() {
+    document.getElementById('settings-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&size=128`;
+    document.getElementById('settings-name').textContent = `Halo, ${userName}!`;
+    document.getElementById('settings-modal').style.display = 'flex';
+};
+
+window.changeName = function() {
+    const newName = prompt("Masukkan Nama Panggilan baru Anda:", userName);
+    if (newName && newName.trim() !== '') {
+        userName = newName.trim();
+        localStorage.setItem('fin_user_name', userName);
+        updateUserNameUI();
+        document.getElementById('settings-name').textContent = `Halo, ${userName}!`;
+        alert("Nama berhasil diubah!");
+    }
+};
+
+window.resetData = function() {
+    if (confirm("PERINGATAN BAHAYA!\n\nApakah Anda yakin ingin MENGHAPUS SEMUA DATA keuangan dan PIN Anda? Data yang dihapus tidak bisa dikembalikan!")) {
+        if (confirm("Apakah Anda benar-benar yakin?")) {
+            localStorage.clear();
+            alert("Seluruh data telah dihapus. Aplikasi akan dimuat ulang.");
+            location.reload();
+        }
+    }
+};
+
 window.changePin = function() {
     const oldPin = prompt("Untuk mengubah PIN, masukkan PIN 6-digit LAMA Anda:");
     if (oldPin === null) return; // User cancelled
