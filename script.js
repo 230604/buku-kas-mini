@@ -20,7 +20,7 @@ function updateUserNameUI() {
     if(document.getElementById('login-avatar')) document.getElementById('login-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random`;
     
     // Update mobile hero
-    if(document.getElementById('mh-display-name')) document.getElementById('mh-display-name').textContent = `Master ${userName}!`;
+    if(document.getElementById('mh-display-name')) document.getElementById('mh-display-name').textContent = `Halo, ${userName}!`;
     if(document.getElementById('mh-avatar-img')) document.getElementById('mh-avatar-img').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random`;
 }
 
