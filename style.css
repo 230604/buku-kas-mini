@@ -545,8 +545,8 @@ html, body {
     .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-top: 10px; }
     .grid-form-table { grid-template-columns: 1fr; padding: 16px; }
     
-    .card.table-card { margin: 16px; width: auto; }
-    .card.print-hide { margin: 16px; width: auto; }
+    .card.table-card { margin: 0 0 16px 0; width: 100%; box-sizing: border-box; }
+    .card.print-hide { margin: 0 0 16px 0; width: 100%; box-sizing: border-box; }
     
     .inline-form { flex-direction: column; align-items: stretch; }
 
