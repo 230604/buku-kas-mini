@@ -540,29 +540,16 @@ html, body {
     }
 
     /* Adjust grids for mobile */
-    .grid-6 { grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; box-sizing: border-box; }
-    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 12px; width: 100%; box-sizing: border-box; }
-    .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-top: 10px; width: 100%; box-sizing: border-box; }
-    .grid-form-table { grid-template-columns: 1fr; padding: 16px; width: 100%; box-sizing: border-box; overflow-x: hidden; }
+    .grid-6 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-top: 10px; }
+    .grid-form-table { grid-template-columns: 1fr; padding: 16px; }
     
-    .card.table-card { margin: 0 0 16px 0; width: 100%; box-sizing: border-box; }
-    .card.print-hide { margin: 0 0 16px 0; width: 100%; box-sizing: border-box; }
+    .card.table-card { margin: 16px; width: auto; }
+    .card.print-hide { margin: 16px; width: auto; }
     
     .inline-form { flex-direction: column; align-items: stretch; }
 
-    /* Compact Forms on Mobile */
-    .form-group { margin-bottom: 12px; }
-    .form-group label { margin-bottom: 6px; font-size: 12px; }
-    .form-select, input[type="date"], input[type="text"], input[type="number"] { 
-        padding: 10px 14px; 
-        font-size: 14px; 
-        border-radius: 8px; 
-    }
-    .btn-primary { 
-        padding: 12px 20px; 
-        font-size: 14px; 
-        margin-top: 5px;
-    }
     /* Bottom Navigation */
     .bottom-nav {
         position: fixed;
