@@ -536,13 +536,13 @@ html, body {
     }
 
     /* Adjust grids for mobile */
-    .grid-6 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .grid-3 { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 16px; margin-top: 10px; }
-    .grid-form-table { grid-template-columns: 1fr; padding: 16px; }
+    .grid-6 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 16px; margin-top: 10px; }
+    .grid-form-table { grid-template-columns: minmax(0, 1fr); padding: 16px; gap: 16px; }
     
-    .card.table-card { margin: 16px; width: auto; }
-    .card.print-hide { margin: 16px; width: auto; }
+    .card.table-card { margin: 0; width: 100%; }
+    .card.print-hide { margin: 0; width: 100%; }
     
     .inline-form { flex-direction: column; align-items: stretch; }
 
