@@ -541,7 +541,13 @@ function renderTransactions() {
         `;
     }).join('');
 }
-function delTrx(id) { transactions = transactions.filter(t => t.id !== id); saveData(); renderAll(); }
+function delTrx(id) { 
+    if(confirm("Apakah Anda yakin ingin menghapus transaksi ini?")) {
+        transactions = transactions.filter(t => t.id !== id); 
+        saveData(); 
+        renderAll(); 
+    }
+}
 
 // --- 3. SAVINGS ---
 document.getElementById('goal-form').addEventListener('submit', (e) => {
@@ -594,7 +600,13 @@ function renderSavings() {
         `;
     }).join('');
 }
-function delGoal(id) { savingGoals = savingGoals.filter(g => g.id !== id); saveData(); renderAll(); }
+function delGoal(id) { 
+    if(confirm("Apakah Anda yakin ingin menghapus target tabungan ini?")) {
+        savingGoals = savingGoals.filter(g => g.id !== id); 
+        saveData(); 
+        renderAll(); 
+    }
+}
 
 // --- 4. BALANCES ---
 document.getElementById('account-form').addEventListener('submit', (e) => {
@@ -616,9 +628,12 @@ function renderBalances(calc) {
         const bal = calc.accBalances[a.id];
         return `
             <div class="card">
-                <div class="card-header" style="display:flex; justify-content:space-between;">
+                <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
                     <h3 class="card-title">${a.name}</h3>
-                    ${a.id > 2 ? `<button class="print-hide btn-danger-outline" onclick="delAcc(${a.id})" style="border:none;"><i class="fa fa-trash"></i></button>` : ''}
+                    <div>
+                        <button class="print-hide" onclick="editAcc(${a.id})" style="background:none; border:none; color:var(--info-blue); cursor:pointer; margin-right:10px;"><i class="fa fa-pen"></i></button>
+                        ${a.id > 2 ? `<button class="print-hide" onclick="delAcc(${a.id})" style="background:none; border:none; color:var(--danger-red); cursor:pointer;"><i class="fa fa-trash"></i></button>` : ''}
+                    </div>
                 </div>
                 <span class="badge gray mb-20">${a.type}</span>
                 <div style="font-size: 24px; font-weight:800; color:var(--info-blue);">${formatRp(bal)}</div>
@@ -626,7 +641,27 @@ function renderBalances(calc) {
         `;
     }).join('');
 }
-function delAcc(id) { accounts = accounts.filter(a => a.id !== id); saveData(); renderAll(); }
+window.editAcc = function(id) {
+    const acc = accounts.find(a => a.id === id);
+    if(!acc) return;
+    const newName = prompt("Ubah Nama Rekening/Dompet:", acc.name);
+    if(newName === null) return;
+    const newBal = prompt("Ubah Saldo Awal (Rp):", acc.initBalance);
+    if(newBal === null) return;
+    
+    if(newName.trim() !== '') acc.name = newName.trim();
+    if(!isNaN(parseFloat(newBal))) acc.initBalance = parseFloat(newBal);
+    
+    saveData();
+    renderAll();
+};
+function delAcc(id) { 
+    if(confirm("Apakah Anda yakin ingin menghapus rekening/dompet ini?")) {
+        accounts = accounts.filter(a => a.id !== id); 
+        saveData(); 
+        renderAll(); 
+    }
+}
 
 // --- 5. BUDGETS ---
 document.getElementById('budget-form').addEventListener('submit', (e) => {
@@ -675,7 +710,13 @@ function renderBudgets(calc) {
         `;
     }).join('');
 }
-function delBudg(id) { budgets = budgets.filter(b => b.id !== id); saveData(); renderAll(); }
+function delBudg(id) { 
+    if(confirm("Apakah Anda yakin ingin menghapus jatah budget ini?")) {
+        budgets = budgets.filter(b => b.id !== id); 
+        saveData(); 
+        renderAll(); 
+    }
+}
 
 // --- 6. STATS & RECAP ---
 function renderStats(calc) {
