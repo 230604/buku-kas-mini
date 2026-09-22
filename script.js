@@ -650,7 +650,12 @@ window.editAcc = function(id) {
     if(newBal === null) return;
     
     if(newName.trim() !== '') acc.name = newName.trim();
-    if(!isNaN(parseFloat(newBal))) acc.initBalance = parseFloat(newBal);
+    
+    // Hilangkan semua titik, koma, dan spasi sebelum diproses jadi angka
+    const bersihBal = newBal.replace(/[^0-9-]/g, '');
+    if(bersihBal !== '' && !isNaN(parseFloat(bersihBal))) {
+        acc.initBalance = parseFloat(bersihBal);
+    }
     
     saveData();
     renderAll();
